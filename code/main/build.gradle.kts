@@ -4,7 +4,9 @@ plugins {
 
 dependencies {
   implementation(project(":foundation"))
+  implementation(project(":vocabulary"))
   implementation(project(":ordering-internal"))
+  implementation(project(":shipping-internal"))
 }
 
 application {

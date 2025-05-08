@@ -3,6 +3,7 @@ package com.github.immortaleeb.ecommerce.ordering
 import com.github.immortaleeb.ecommerce.foundation.events.testing.FakeEventPublisher
 import com.github.immortaleeb.ecommerce.foundation.logging.testing.LoggingTest
 import com.github.immortaleeb.ecommerce.foundation.logging.testing.TestLoggers
+import com.github.immortaleeb.ecommerce.vocabulary.ProductId
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 

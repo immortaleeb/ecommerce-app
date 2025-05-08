@@ -1,4 +1,4 @@
 dependencies {
-    api(project(":vocabulary"))
+    api(project(":shipping-api"))
     implementation(project(":foundation"))
 }

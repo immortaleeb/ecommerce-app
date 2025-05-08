@@ -1,9 +1,6 @@
 package com.github.immortaleeb.ecommerce.ordering
 
-import com.github.immortaleeb.ecommerce.foundation.commands.api.Command
-
-@JvmInline
-value class ProductId(val value: String)
+import com.github.immortaleeb.ecommerce.vocabulary.ProductId
 
 @JvmInline
 value class StrictPositiveInt(val value: Int) {
@@ -13,4 +10,4 @@ value class StrictPositiveInt(val value: Int) {
 }
 inline val Int.strictPositive get() = StrictPositiveInt(this)
 
-data class PlaceOrder(val productId: ProductId, val amount: StrictPositiveInt) : Command
+data class PlaceOrder(val productId: ProductId, val amount: StrictPositiveInt) : OrderingCommand
