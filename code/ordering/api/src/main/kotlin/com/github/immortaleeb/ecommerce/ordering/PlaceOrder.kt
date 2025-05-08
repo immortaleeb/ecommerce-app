@@ -1,0 +1,16 @@
+package com.github.immortaleeb.ecommerce.ordering
+
+import com.github.immortaleeb.ecommerce.foundation.commands.api.Command
+
+@JvmInline
+value class ProductId(val value: String)
+
+@JvmInline
+value class StrictPositiveInt(val value: Int) {
+    init {
+        check(value > 0) { "Positive Int must be positive" }
+    }
+}
+inline val Int.strictPositive get() = StrictPositiveInt(this)
+
+data class PlaceOrder(val productId: ProductId, val amount: StrictPositiveInt) : Command

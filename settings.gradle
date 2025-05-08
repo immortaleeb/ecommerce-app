@@ -2,6 +2,10 @@ rootProject.name = 'ecommerce-app'
 
 include(':main')
 include(':foundation')
+include(':ordering-api')
+include(':ordering-internal')
 
 project(':main').projectDir = file('code/main')
 project(':foundation').projectDir = file('code/foundation')
+project(':ordering-api').projectDir = file('code/ordering/api')
+project(':ordering-internal').projectDir = file('code/ordering/internal')

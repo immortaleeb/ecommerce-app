@@ -21,7 +21,6 @@ tasks.withType<DependencyUpdatesTask> {
 
 subprojects {
     apply {
-        plugin("java-library")
         plugin(rootProject.libs.plugins.kotlin.jvm.get().pluginId)
     }
 

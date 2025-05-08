@@ -4,6 +4,7 @@ plugins {
 
 dependencies {
   implementation(project(":foundation"))
+  implementation(project(":ordering-internal"))
 }
 
 application {
@@ -16,4 +17,3 @@ tasks.processResources {
     expand(project.properties)
   }
 }
-
