@@ -20,13 +20,15 @@ fun main() {
     }
     val commandExecutor = DelegatingCommandExecutor(loggers, eventPublisher)
 
+    val productId = ProductId.generate()
     commandExecutor.execute(PlaceOrder(
-        productId = ProductId("1"),
+        productId = productId,
         amount = 10.strictPositive
     ))
 
+    val orderId = OrderId.generate()
     commandExecutor.execute(ShipOrder(
-        orderId = OrderId("order-123"),
-        productId = ProductId("1")
+        orderId = orderId,
+        productId = productId
     ))
 }
