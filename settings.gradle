@@ -1,0 +1,5 @@
+rootProject.name = 'ecommerce-app'
+
+include(':main')
+
+project(':main').projectDir = file('code/main')
