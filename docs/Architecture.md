@@ -20,8 +20,6 @@ Functional modules are always split into two subprojects:
 The foundation module contains some classes and interfaces which can be used for communication between modules:
 - CommandExecutor: This interface can be used to execute commands from any module.
 - EventPublisher: This interface is used to publish events
-- OrderingCommand: Marker interface for commands that should be handled by the ordering module
-- ShippingCommand: Marker interface for commands that should be handled by the shipping module
 
 ## The vocabulary module
 
@@ -30,10 +28,3 @@ The vocabulary module contains domain classes that are used across multiple func
 - OrderId: A value class representing the unique identifier of an order
 
 This module helps avoid circular dependencies between functional modules by extracting common domain concepts into a separate module that can be depended on by multiple modules.
-
-## Command Execution
-
-Commands are executed through a unified command executor in the main module:
-- DelegatingCommandExecutor: Routes commands to the appropriate module-specific executor based on the command type
-  - OrderingCommands are routed to the OrderingCommandExecutor
-  - ShippingCommands are routed to the ShippingCommandExecutor
