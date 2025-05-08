@@ -1,5 +1,7 @@
 rootProject.name = 'ecommerce-app'
 
 include(':main')
+include(':foundation')
 
 project(':main').projectDir = file('code/main')
+project(':foundation').projectDir = file('code/foundation')

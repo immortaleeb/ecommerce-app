@@ -2,6 +2,10 @@ plugins {
   id("application")
 }
 
+dependencies {
+  implementation(project(":foundation"))
+}
+
 application {
   mainClass = "com.github.immortaleeb.ecommerce.ApplicationKt"
   applicationDefaultJvmArgs = listOf("-Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager")

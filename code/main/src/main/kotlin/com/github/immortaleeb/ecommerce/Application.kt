@@ -1,12 +1,10 @@
 package com.github.immortaleeb.ecommerce
 
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
-
-private val logger: Logger = LoggerFactory.getLogger("Application")
+import com.github.immortaleeb.ecommerce.foundation.logging.log4j2.Log4j2Loggers
 
 fun main() {
-    logger.atInfo()
-        .addKeyValue("foo", "bar")
-        .log("Hello World")
+    val loggers = Log4j2Loggers()
+    val logger = loggers.get("Application")
+
+    logger.info("Hello world", "foo" to "bar", "bar" to "baz")
 }
