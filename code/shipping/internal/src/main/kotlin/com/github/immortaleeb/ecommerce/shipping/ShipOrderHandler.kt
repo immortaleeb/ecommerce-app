@@ -7,12 +7,11 @@ class ShipOrderHandler(loggers: Loggers, private val eventPublisher: EventPublis
     private val logger = loggers.get(ShipOrderHandler::class)
 
     fun handle(command: ShipOrder) {
-        val event = OrderShipped(orderId = command.orderId, productId = command.productId)
+        val event = OrderShipped(orderId = command.orderId)
         eventPublisher.publish(event)
         
         logger.info("Order shipped",
             "orderId" to command.orderId, 
-            "productId" to command.productId
         )
     }
 }
