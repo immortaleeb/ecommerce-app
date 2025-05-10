@@ -1,6 +1,5 @@
 package com.github.immortaleeb.ecommerce.shipping
 
-import com.github.immortaleeb.ecommerce.shipping.Order
 import com.github.immortaleeb.ecommerce.vocabulary.OrderId
 
 class TestOrders(private val orderFactory: Order.Factory) : Orders {

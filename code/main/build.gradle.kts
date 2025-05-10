@@ -7,6 +7,7 @@ dependencies {
   implementation(project(":vocabulary"))
   implementation(project(":ordering-internal"))
   implementation(project(":shipping-internal"))
+  implementation(project(":infra-inmemory"))
 }
 
 application {

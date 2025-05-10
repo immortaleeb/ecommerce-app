@@ -3,10 +3,10 @@ package com.github.immortaleeb.ecommerce
 import com.github.immortaleeb.ecommerce.foundation.events.api.Event
 import com.github.immortaleeb.ecommerce.foundation.events.api.EventPublisher
 import com.github.immortaleeb.ecommerce.foundation.logging.log4j2.Log4j2Loggers
+import com.github.immortaleeb.ecommerce.infra.inmemory.shipping.InMemoryOrders
 import com.github.immortaleeb.ecommerce.ordering.PlaceOrder
 import com.github.immortaleeb.ecommerce.ordering.strictPositive
 import com.github.immortaleeb.ecommerce.shipping.Order
-import com.github.immortaleeb.ecommerce.shipping.Orders
 import com.github.immortaleeb.ecommerce.shipping.ShipOrder
 import com.github.immortaleeb.ecommerce.vocabulary.OrderId
 import com.github.immortaleeb.ecommerce.vocabulary.ProductId
@@ -20,17 +20,11 @@ fun main() {
             logger.info("Published event: $event")
         }
     }
-    val orders = object : Orders {
-        override fun getById(orderId: OrderId): Order {
-            TODO("Not yet implemented")
-        }
-
-        override fun update(order: Order) {
-            TODO("Not yet implemented")
-        }
-    }
+    val orders = InMemoryOrders(Order.Factory(loggers, eventPublisher))
 
     val commandExecutor = DelegatingCommandExecutor(orders, loggers, eventPublisher)
+
+    // TODO: be able to "create" an order
 
     commandExecutor.execute(PlaceOrder(
         productId = ProductId.generate(),

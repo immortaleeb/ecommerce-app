@@ -22,6 +22,7 @@ tasks.withType<DependencyUpdatesTask> {
 subprojects {
     apply {
         plugin(rootProject.libs.plugins.kotlin.jvm.get().pluginId)
+        plugin("java-test-fixtures")
     }
 
     repositories {
@@ -31,6 +32,8 @@ subprojects {
     val implementation by configurations
     val testImplementation by configurations
     val testRuntimeOnly by configurations
+    val testFixturesImplementation by configurations
+    val testFixturesRuntimeOnly by configurations
 
     dependencies {
         implementation(rootProject.libs.bundles.log4j)
@@ -41,6 +44,12 @@ subprojects {
         testRuntimeOnly(rootProject.libs.junit.jupiter.engine)
         testRuntimeOnly(rootProject.libs.junit.platform.launcher)
         testImplementation(rootProject.libs.assertj.core)
+
+        testFixturesImplementation(platform(rootProject.libs.junit.bom))
+        testFixturesImplementation(rootProject.libs.junit.jupiter.api)
+        testFixturesRuntimeOnly(rootProject.libs.junit.jupiter.engine)
+        testFixturesRuntimeOnly(rootProject.libs.junit.platform.launcher)
+        testFixturesImplementation(rootProject.libs.assertj.core)
     }
 
     plugins.withId(rootProject.libs.plugins.kotlin.jvm.get().pluginId) {
