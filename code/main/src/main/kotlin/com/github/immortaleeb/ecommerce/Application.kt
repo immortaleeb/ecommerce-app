@@ -7,7 +7,9 @@ import com.github.immortaleeb.ecommerce.infra.inmemory.shipping.InMemoryOrders
 import com.github.immortaleeb.ecommerce.ordering.PlaceOrder
 import com.github.immortaleeb.ecommerce.ordering.strictPositive
 import com.github.immortaleeb.ecommerce.shipping.Order
+import com.github.immortaleeb.ecommerce.shipping.ProvideShippingAddress
 import com.github.immortaleeb.ecommerce.shipping.ShipOrder
+import com.github.immortaleeb.ecommerce.shipping.ShippingAddress
 import com.github.immortaleeb.ecommerce.vocabulary.OrderId
 import com.github.immortaleeb.ecommerce.vocabulary.ProductId
 
@@ -20,19 +22,34 @@ fun main() {
             logger.info("Published event: $event")
         }
     }
-    val orders = InMemoryOrders(Order.Factory(loggers, eventPublisher))
+    val orderFactory = Order.Factory(loggers, eventPublisher)
+    val orders = InMemoryOrders(orderFactory)
 
     val commandExecutor = DelegatingCommandExecutor(orders, loggers, eventPublisher)
 
-    // TODO: be able to "create" an order
-
-    commandExecutor.execute(PlaceOrder(
-        productId = ProductId.generate(),
-        amount = 10.strictPositive
-    ))
-
     val orderId = OrderId.generate()
-    commandExecutor.execute(ShipOrder(
-        orderId = orderId,
-    ))
+    commandExecutor.execute(
+        ProvideShippingAddress(
+            orderId, ShippingAddress(
+                countryCode = "BE",
+                city = "Brussel",
+                zipCode = "1020",
+                addressLine = "Atomiumplein 1",
+            )
+        )
+    )
+
+    commandExecutor.execute(
+        PlaceOrder(
+            productId = ProductId.generate(),
+            amount = 10.strictPositive
+        )
+    )
+
+
+    commandExecutor.execute(
+        ShipOrder(
+            orderId = orderId,
+        )
+    )
 }

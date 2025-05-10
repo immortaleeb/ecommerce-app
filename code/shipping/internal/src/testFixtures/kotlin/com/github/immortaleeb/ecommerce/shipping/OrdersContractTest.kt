@@ -25,9 +25,16 @@ interface OrdersContractTest {
     }
 
     @Test
+    fun `create creates new order`() {
+        orders.create(unshippedOrderToAtomium().id, unshippedOrderToAtomium().shippingAddress)
+
+        assertThat(orders.getById(unshippedOrderToAtomium().id)).isNotNull
+    }
+
+    @Test
     fun `update updates existing order`() {
         val order = unshippedOrderToAtomium().restore()
-        assumeExisting(order)
+        orders.create(unshippedOrderToAtomium().id, unshippedOrderToAtomium().shippingAddress)
 
         orders.update(shippedOrderToAtomium().restore())
 
@@ -36,5 +43,4 @@ interface OrdersContractTest {
 
     fun Order.Snapshot.restore(): Order = orderFactory.restore(this)
 
-    fun assumeExisting(order: Order)
 }

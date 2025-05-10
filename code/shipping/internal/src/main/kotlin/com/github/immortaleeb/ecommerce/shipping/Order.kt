@@ -37,10 +37,16 @@ class Order private constructor(
             shippingAddress = snapshot.shippingAddress,
             status = snapshot.status
         )
+        
+        fun create(orderId: OrderId, shippingAddress: ShippingAddress) = Order(
+            loggers = loggers,
+            eventPublisher = eventPublisher,
+            id = orderId,
+            shippingAddress = shippingAddress,
+            status = ShippingStatus.NotShipped
+        )
     }
 }
-
-data class ShippingAddress(val countryCode: String, val city: String, val zipCode: String, val addressLine: String)
 
 enum class ShippingStatus {
     NotShipped, Shipped

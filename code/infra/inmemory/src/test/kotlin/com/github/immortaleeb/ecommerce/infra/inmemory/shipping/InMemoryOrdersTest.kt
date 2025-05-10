@@ -11,5 +11,5 @@ class InMemoryOrdersTest : OrdersContractTest, LoggingTest {
     override val orderFactory: Order.Factory = Order.Factory(loggers, FakeEventPublisher())
     override val orders = InMemoryOrders(orderFactory)
 
-    override fun assumeExisting(order: Order) = orders.assumeExisting(order)
+    fun assumeExisting(order: Order) = orders.assumeExisting(order)
 }
