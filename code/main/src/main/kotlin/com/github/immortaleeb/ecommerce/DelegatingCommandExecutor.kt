@@ -7,14 +7,16 @@ import com.github.immortaleeb.ecommerce.ordering.OrderingCommand
 import com.github.immortaleeb.ecommerce.shipping.ShippingCommand
 import com.github.immortaleeb.ecommerce.foundation.logging.api.Loggers
 import com.github.immortaleeb.ecommerce.ordering.OrderingCommandExecutor
+import com.github.immortaleeb.ecommerce.shipping.Orders
 import com.github.immortaleeb.ecommerce.shipping.ShippingCommandExecutor
 
 class DelegatingCommandExecutor(
+    orders: Orders,
     loggers: Loggers,
     eventPublisher: EventPublisher,
 ) : CommandExecutor {
     private val orderingCommandExecutor = OrderingCommandExecutor(loggers, eventPublisher)
-    private val shippingCommandExecutor = ShippingCommandExecutor(loggers, eventPublisher)
+    private val shippingCommandExecutor = ShippingCommandExecutor(orders)
     private val logger = loggers.get(DelegatingCommandExecutor::class)
 
     override fun execute(command: Command) {

@@ -11,7 +11,6 @@ class TestLoggers : Loggers {
     override fun get(name: String): Logger = object : Logger {
         override fun info(message: String, vararg context: Pair<String, Any>) {
             _loggedLines.add(LoggedLine(
-                logger = name,
                 message = message,
                 context = mapOf(*context)
             ))
@@ -24,5 +23,5 @@ class TestLoggers : Loggers {
 
     override fun get(klass: KClass<*>) = get(klass.java.name)
 
-    data class LoggedLine(val logger: String, val message: String, val context: Map<String, Any>)
+    data class LoggedLine(val message: String, val context: Map<String, Any>)
 }

@@ -6,10 +6,9 @@ import com.github.immortaleeb.ecommerce.foundation.events.api.EventPublisher
 import com.github.immortaleeb.ecommerce.foundation.logging.api.Loggers
 
 class ShippingCommandExecutor(
-    private val loggers: Loggers,
-    private val eventPublisher: EventPublisher
+    orders: Orders,
 ) : CommandExecutor {
-    private val shipOrderHandler = ShipOrderHandler(loggers, eventPublisher)
+    private val shipOrderHandler = ShipOrderHandler(orders)
 
     override fun execute(command: Command) {
         when (command) {
