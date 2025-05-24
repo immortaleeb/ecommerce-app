@@ -16,4 +16,5 @@ dependencies {
 
     testImplementation(testFixtures(project(":foundation")))
     testImplementation(testFixtures(project(":shipping-internal")))
+    testImplementation(testFixtures(project(":ordering-internal")))
 }

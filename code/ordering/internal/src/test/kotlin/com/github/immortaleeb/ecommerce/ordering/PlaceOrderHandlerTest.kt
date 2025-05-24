@@ -13,12 +13,13 @@ private val FIXED_ORDER_ID = OrderId.of("order_01jtrtsrywfzqa7fcqfpzn0m6q")
 class PlaceOrderHandlerTest : LoggingTest {
     override val loggers: TestLoggers = TestLoggers()
     private val eventPublisher: FakeEventPublisher = FakeEventPublisher()
+    private val orders = TestOrders(Order.Factory(loggers, eventPublisher))
 
-    private val commandExecutor = OrderingCommandExecutor(loggers, eventPublisher) { FIXED_ORDER_ID }
+    private val commandExecutor = OrderingCommandExecutor(loggers, eventPublisher, orders) { FIXED_ORDER_ID }
 
     @Test
     fun `logs that the order was placed`() {
-        commandExecutor.execute(PlaceOrder(productId = ProductId.generate(), amount = 2.strictPositive))
+        placeOrder(productId = ProductId.generate(), amount = 2.strictPositive)
 
         assertThat(loggedLines).hasSize(1)
         assertThat(loggedLines[0].message).isEqualTo("Order placed")
@@ -27,10 +28,25 @@ class PlaceOrderHandlerTest : LoggingTest {
     @Test
     fun `publishes OrderPlaced event`() {
         val productId = ProductId.generate()
-        commandExecutor.execute(PlaceOrder(productId = productId, amount = 2.strictPositive))
+        placeOrder(productId = productId, amount = 2.strictPositive)
 
         assertThat(eventPublisher.publishedEvents).singleElement().isEqualTo(
             OrderPlaced(orderId = FIXED_ORDER_ID, productId = productId, amount = 2.strictPositive)
         )
+    }
+    
+    @Test
+    fun `creates an order`() {
+        val productId = ProductId.generate()
+        placeOrder(productId = productId, amount = 2.strictPositive)
+        
+        val order = orders.getById(FIXED_ORDER_ID).snapshot()
+        assertThat(order.id).isEqualTo(FIXED_ORDER_ID)
+        assertThat(order.productId).isEqualTo(productId)
+        assertThat(order.amount).isEqualTo(2.strictPositive)
+    }
+
+    private fun placeOrder(productId: ProductId, amount: StrictPositiveInt) {
+        commandExecutor.execute(PlaceOrder(productId = productId, amount = amount))
     }
 }

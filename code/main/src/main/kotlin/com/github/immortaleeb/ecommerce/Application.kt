@@ -3,10 +3,8 @@ package com.github.immortaleeb.ecommerce
 import com.github.immortaleeb.ecommerce.foundation.events.api.Event
 import com.github.immortaleeb.ecommerce.foundation.events.api.EventPublisher
 import com.github.immortaleeb.ecommerce.foundation.logging.log4j2.Log4j2Loggers
-import com.github.immortaleeb.ecommerce.infra.inmemory.shipping.InMemoryOrders
 import com.github.immortaleeb.ecommerce.ordering.PlaceOrder
 import com.github.immortaleeb.ecommerce.ordering.strictPositive
-import com.github.immortaleeb.ecommerce.shipping.Order
 import com.github.immortaleeb.ecommerce.shipping.ProvideShippingAddress
 import com.github.immortaleeb.ecommerce.shipping.ShipOrder
 import com.github.immortaleeb.ecommerce.shipping.ShippingAddress
@@ -22,10 +20,20 @@ fun main() {
             logger.info("Published event: $event")
         }
     }
-    val orderFactory = Order.Factory(loggers, eventPublisher)
-    val orders = InMemoryOrders(orderFactory)
+    val orderingOrders = com.github.immortaleeb.ecommerce.infra.inmemory.shipping.InMemoryOrders(
+        com.github.immortaleeb.ecommerce.shipping.Order.Factory(
+            loggers,
+            eventPublisher
+        )
+    )
+    val shippingOrders = com.github.immortaleeb.ecommerce.infra.inmemory.ordering.InMemoryOrders(
+        com.github.immortaleeb.ecommerce.ordering.Order.Factory(
+            loggers,
+            eventPublisher
+        )
+    )
 
-    val commandExecutor = DelegatingCommandExecutor(orders, loggers, eventPublisher)
+    val commandExecutor = DelegatingCommandExecutor(orderingOrders, shippingOrders, loggers, eventPublisher)
 
     val orderId = OrderId.generate()
     commandExecutor.execute(

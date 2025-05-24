@@ -7,12 +7,15 @@ import com.github.immortaleeb.ecommerce.vocabulary.OrderId
 class PlaceOrderHandler(
     loggers: Loggers,
     private val eventPublisher: EventPublisher,
+    private val orders: Orders,
     val generateOrderId: () -> OrderId = { OrderId.generate() }
 ) {
     private val logger = loggers.get(PlaceOrderHandler::class)
 
     fun handle(command: PlaceOrder) {
-        eventPublisher.publish(OrderPlaced(orderId = generateOrderId(), productId = command.productId, amount = command.amount))
-        logger.info("Order placed", "orderId" to generateOrderId, "productId" to command.productId, "amount" to command.amount)
+        val orderId = generateOrderId()
+        orders.create(orderId, command.productId, command.amount)
+        eventPublisher.publish(OrderPlaced(orderId = orderId, productId = command.productId, amount = command.amount))
+        logger.info("Order placed", "orderId" to orderId, "productId" to command.productId, "amount" to command.amount)
     }
 }

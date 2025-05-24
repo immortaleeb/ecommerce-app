@@ -9,9 +9,10 @@ import com.github.immortaleeb.ecommerce.vocabulary.OrderId
 class OrderingCommandExecutor(
     loggers: Loggers,
     eventPublisher: EventPublisher,
+    orders: Orders,
     generateOrderId: () -> OrderId = { OrderId.generate() }
 ) : CommandExecutor {
-    private val placeOrder: PlaceOrderHandler = PlaceOrderHandler(loggers, eventPublisher, generateOrderId)
+    private val placeOrder: PlaceOrderHandler = PlaceOrderHandler(loggers, eventPublisher, orders, generateOrderId)
 
     override fun execute(command: Command) {
         when (command) {
