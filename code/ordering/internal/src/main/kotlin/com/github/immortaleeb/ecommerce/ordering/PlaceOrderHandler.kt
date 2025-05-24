@@ -8,14 +8,12 @@ class PlaceOrderHandler(
     loggers: Loggers,
     private val eventPublisher: EventPublisher,
     private val orders: Orders,
-    val generateOrderId: () -> OrderId = { OrderId.generate() }
 ) {
     private val logger = loggers.get(PlaceOrderHandler::class)
 
     fun handle(command: PlaceOrder) {
-        val orderId = generateOrderId()
-        orders.create(orderId, command.productId, command.amount)
-        eventPublisher.publish(OrderPlaced(orderId = orderId, productId = command.productId, amount = command.amount))
-        logger.info("Order placed", "orderId" to orderId, "productId" to command.productId, "amount" to command.amount)
+        orders.create(command.orderId, command.productId, command.amount)
+        eventPublisher.publish(OrderPlaced(orderId = command.orderId, productId = command.productId, amount = command.amount))
+        logger.info("Order placed", "orderId" to command.orderId, "productId" to command.productId, "amount" to command.amount)
     }
 }

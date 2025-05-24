@@ -49,6 +49,7 @@ fun main() {
 
     commandExecutor.execute(
         PlaceOrder(
+            orderId = orderId,
             productId = ProductId.generate(),
             amount = 10.strictPositive
         )
