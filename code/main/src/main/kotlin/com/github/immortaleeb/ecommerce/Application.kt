@@ -20,20 +20,10 @@ fun main() {
             logger.info("Published event: $event")
         }
     }
-    val orderingOrders = com.github.immortaleeb.ecommerce.infra.inmemory.shipping.InMemoryOrders(
-        com.github.immortaleeb.ecommerce.shipping.Order.Factory(
-            loggers,
-            eventPublisher
-        )
-    )
-    val shippingOrders = com.github.immortaleeb.ecommerce.infra.inmemory.ordering.InMemoryOrders(
-        com.github.immortaleeb.ecommerce.ordering.Order.Factory(
-            loggers,
-            eventPublisher
-        )
-    )
+    val ordering = OrderingContext(loggers, eventPublisher)
+    val shipping = ShippingContext(loggers, eventPublisher)
 
-    val commandExecutor = DelegatingCommandExecutor(orderingOrders, shippingOrders, loggers, eventPublisher)
+    val commandExecutor = DelegatingCommandExecutor(loggers, ordering, shipping)
 
     val orderId = OrderId.generate()
     commandExecutor.execute(
@@ -54,7 +44,6 @@ fun main() {
             amount = 10.strictPositive
         )
     )
-
 
     commandExecutor.execute(
         ShipOrder(
