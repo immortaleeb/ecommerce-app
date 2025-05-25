@@ -1,5 +1,6 @@
 package com.github.immortaleeb.ecommerce
 
+import com.ecommerce.catalog.api.ListProducts
 import com.github.immortaleeb.ecommerce.foundation.events.api.Event
 import com.github.immortaleeb.ecommerce.foundation.events.api.EventPublisher
 import com.github.immortaleeb.ecommerce.foundation.logging.log4j2.Log4j2Loggers
@@ -20,10 +21,16 @@ fun main() {
             logger.info("Published event: $event")
         }
     }
+    
     val ordering = OrderingContext(loggers, eventPublisher)
     val shipping = ShippingContext(loggers, eventPublisher)
+    val catalog = CatalogContext()
 
+    val queryExecutor = catalog.queryExecutor
     val commandExecutor = DelegatingCommandExecutor(loggers, ordering, shipping)
+
+    val products = queryExecutor.execute(ListProducts)
+    val frankenstein = products.first { it.description == "Frankenstein" }
 
     val orderId = OrderId.generate()
     commandExecutor.execute(
@@ -40,7 +47,7 @@ fun main() {
     commandExecutor.execute(
         PlaceOrder(
             orderId = orderId,
-            productId = ProductId.generate(),
+            productId = frankenstein.id,
             amount = 10.strictPositive
         )
     )
